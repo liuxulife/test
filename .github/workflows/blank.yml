@@ -1,11 +1,8 @@
-name: Auto Commit Every 5 Minutes (For Testing)
+name: Auto Commit Daily
 
 on:
-  push:
-    branches:
-      - main
   schedule:
-    - cron: '*/5 * * * *'  # 每 5 分钟触发一次
+    - cron: '0 0 * * *'  # 每天 UTC 00:00 运行
   workflow_dispatch:  # 允许手动触发
 
 permissions:
@@ -18,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # 确保使用 GitHub Token
+          token: ${{ secrets.GITHUB_TOKEN }}  # 确保有推送权限
 
       - name: Make a Trivial Change
         run: |
@@ -29,5 +26,5 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add keep-alive.txt
-          git commit -m "Auto commit at $(date +'%Y-%m-%d %H:%M:%S')" || exit 0
+          git commit -m "Daily auto commit at $(date +'%Y-%m-%d %H:%M:%S')" || exit 0
           git push origin main
