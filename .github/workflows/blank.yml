@@ -1,0 +1,30 @@
+name: Auto Commit Every Minute
+
+on:
+  schedule:
+    - cron: '*/1 * * * *'  # 每分钟触发一次
+  workflow_dispatch:  # 手动触发
+
+permissions:
+  contents: write  # 允许推送更改
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update file
+        run: |
+          echo "$(date +'%Y-%m-%d %H:%M:%S') - Auto commit" >> auto-commit.log
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add auto-commit.log
+          git commit -m "Auto commit at $(date +'%Y-%m-%d %H:%M:%S')" || exit 0
+          git push origin main
