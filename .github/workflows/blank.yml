@@ -1,12 +1,12 @@
-name: Auto Commit Every Minute
+name: Auto Commit Every Week
 
 on:
   schedule:
-    - cron: '*/1 * * * *'  # 每分钟触发一次
-  workflow_dispatch:  # 手动触发
+    - cron: '0 0 * * 0'  # 每周日 00:00 触发
+  workflow_dispatch:  # 允许手动触发
 
 permissions:
-  contents: write  # 允许推送更改
+  contents: write  # 允许 GitHub Actions 推送更改
 
 jobs:
   auto-commit:
@@ -19,6 +19,7 @@ jobs:
 
       - name: Update file
         run: |
+          touch auto-commit.log  # 确保文件存在
           echo "$(date +'%Y-%m-%d %H:%M:%S') - Auto commit" >> auto-commit.log
 
       - name: Commit changes
