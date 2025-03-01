@@ -2,7 +2,7 @@ name: Auto Commit Every Week
 
 on:
   schedule:
-    - cron: '*/1 * * * *' 
+    - cron: '*/3 * * * *' 
   workflow_dispatch:  # 允许手动触发
 
 permissions:
